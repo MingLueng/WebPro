@@ -1,0 +1,52 @@
+﻿@model IEnumerable<WebBanHangOnline.Models.EF.Category>
+
+@if (Model != null && Model.Any())
+    {
+        <ul class="navbar_menu">
+            @foreach (var item in Model)
+            {
+                if (item.Alias.Equals("trang-chu"))
+                {
+                    item.Alias="";
+                }
+                <li><a href="/@item.Alias">@item.Title</a></li>
+
+            }
+        </ul>
+    }
+@*<ul class="navbar_menu" id="dropDownlist">
+
+    </ul>
+
+    @section scripts{
+        <script>
+            $(document).ready(function () {
+
+                LoadMenuTop();
+            });
+            function LoadMenuTop() {
+                $.ajax({
+                    url: '/Menu/MenuTop',
+                    type: 'GET',
+                    success: function (rs) {
+
+                        debugger
+                        if (rs.TotalItems > 0) {
+                            var items = rs.data;
+                            var str = "";
+
+                            for (var i = 0; i < rs.data.length; i++) {
+                                str += '<li><a href="' + items[i].Alias + '">' + items[i].Title + '</a></li>';
+                            }
+                            $('#dropDownlist').html(str);
+                        }
+                    }
+                })
+            }
+        </script>
+    }*@
+
+
+
+
+

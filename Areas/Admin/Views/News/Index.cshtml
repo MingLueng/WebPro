@@ -1,0 +1,130 @@
+﻿
+@{
+    ViewBag.Title = "Danh sách tin tức";
+   
+}
+
+
+
+
+<!-- Main content -->
+<section class="content" >
+    <div class="col-12" id="main-news" style="display:block;">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@ViewBag.Title</h3>
+
+                <div class="card-tools">
+                    <a href="/admin/news/add" class="btn btn-primary">Thêm mới</a>
+                    <a href="#" class="btn btn-danger" id="btnDeleteAll">Xóa</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="input-group input-group-sm">
+                            <input type="search" name="searchtext" id="txtSearchBox" class="form-control" />
+                            <span class="input-group-append">
+                                <button type="button" class="btn btn-info btn-flat" id="btbSearch">Tìm kiếm</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="SelectAll" /></th>
+                            <th>STT</th>
+                            <th>Hình ảnh</th>
+                            <th>Tiêu đề tin </th>
+                            <th>Tiêu đề danh mục</th>
+                            <th>Ngày tạo</th>
+                            <th style="text-align:center;">Hiển thị</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="show_data">
+                        @*   @if (Model != null && Model.Any())
+                        {
+
+                            var i =((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
+
+                            foreach (var item in Model)
+                            {
+
+                                var strCheck = item.IsActive ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
+                                <tr id="trow_@item.Id">
+                                    <td><input type="checkbox" class="cbkItem" value="@item.Id" /></td>
+                                    <td>@i</td>
+                                    <td><img src="@item.Image" style="width:50px;" /></td>
+                                    <td>@item.Title</td>
+                                    <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                                    <td class="text-center">
+                                        <a href="#" data-id="@item.Id" class="btnActive">@Html.Raw(strCheck)</a>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/news/edit/@item.Id" class="btn btn-sm btn-primary">Sửa</a>
+                                        <a href="#" data-id="@item.Id" class="btn btn-sm btn-danger btnDelete">Xóa</a>
+                                    </td>
+
+                                </tr>
+                                i++;
+
+                            }
+
+
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4">Không có bản ghi nào</td>
+                            </tr>
+                        }*@
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5" id="pagination">
+                            </td>
+                        </tr>
+                    </tfoot>
+
+                </table>
+                @*   <div class="row">
+                    <div class="col-6"></div>
+                    <div class="col-6" style="text-align:right;">
+                        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+                    </div>
+                </div>*@
+
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                Footer
+            </div>
+            <!-- /.card-footer-->
+        </div>
+    </div>
+    <!-- Default box -->
+    
+    <!-- /.card -->
+
+</section>
+<style>
+    .form-control-borderless {
+        border: none;
+    }
+
+        .form-control-borderless:hover, .form-control-borderless:active, .form-control-borderless:focus {
+            border: none;
+            outline: none;
+            box-shadow: none;
+        }
+</style>
+
+@section scripts{
+
+
+
+}
+
+

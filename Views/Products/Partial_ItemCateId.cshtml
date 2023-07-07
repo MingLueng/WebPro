@@ -1,0 +1,89 @@
+﻿@model IEnumerable<WebBanHangOnline.Models.EF.Product>
+@using WebBanHangOnline.Common
+
+@if (Model != null && Model.Any())
+{
+    foreach (var item in Model)
+    {
+        var strImge = "";
+        var img = item.ProductImage.FirstOrDefault(x => x.IsDefault);
+        if (img != null)
+        {
+            strImge = img.Image;
+        }
+        <div class="product-item @item.ProductCategory.Alias">
+            <div class="product product_filter">
+                <div class="product_image">
+                    <img src="@strImge" alt="@item.Title">
+                </div>
+                @if (item.PriceSale > 0)
+                {
+                    <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>sale</span></div>
+                }
+                
+                <div class="favorite favorite_left"></div>
+                <div class="product_info">
+                    <h6 class="product_name"><a href="/chi-tiet/@item.Alias-@item.Id">@item.Title</a></h6>
+                    @if (item.PriceSale > 0)
+                    {
+                         <div class="product_price"><a class="product_price">đ</a>@Common.FormatNumber(item.PriceSale, 0)<span><a>đ</a>@Common.FormatNumber(item.Price, 0)</span></div>
+                    }
+                    else
+                    {
+                        <div class="product_price"><a class="product_price">đ</a>@Common.FormatNumber(item.Price, 0)</div>
+                        <div style="display:none;" class="in_product_price">@item.Price</div>
+                    }
+                </div>
+            </div>
+            <div class="red_button add_to_cart_button"><a href="#"class="btnAddToCart" data-id="@item.Id">add to cart</a></div>
+        </div>
+    }
+}
+
+@*@section scripts{
+    <script>
+        $(document).ready(function () {
+            GetItemCateId();
+           /* LoadCateId();*/
+        })
+        function GetItemCateId() {
+            $.ajax({
+                url: '/Home/Partial_ItemCateId',
+                type: 'GET',
+                success: function (rs) {
+
+                    if (rs.TotalItems > 0) {
+                        var items = rs.data;
+                        var htrl = "";
+
+                        for (var i = 0; i < rs.data.length; i++) {
+
+                            var giasp = formatNumber(items[i].Price);
+                            var giasale = formatNumber(items[i].Price);
+                            htrl += '<div class="product-item ' + items[i].TenDMSanPham + '">';
+                            htrl += '<div class="product product_filter">';
+                            htrl += '<div class="product_image"><img src = "' + items[i].ThuMucAnh + '" alt = "' + items[i].TenSanPham + '" ></div>';
+                            htrl += '<div class="favorite favorite_left"></div>';
+                            htrl += '<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>';
+                            htrl += '<div class="product_info">';
+                            htrl += '<h6 class="product_name"><a href="' + items[i].Alias + '">' + items[i].TenSanPham + '</a></h6>';
+                            if (items[i].PriceSale > 0) {
+                                htrl += '<div class="product_price">' + giasale + '<span>' + giasp + '</span></div>';
+                            }
+                            else {
+                                htrl += '<div class="product_price">' + giasp + '</div>';
+                            }
+                            htrl += '</div>';
+                            htrl += '</div>';
+                            htrl += '<div class="red_button add_to_cart_button"><a href="#">add to cart</a></div>';
+                            htrl += '</div>';
+                        }
+
+                    }
+                    $("#show-product-item").html(htrl);
+                }
+            })
+
+        }
+    </script>
+}*@

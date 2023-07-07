@@ -1,0 +1,83 @@
+﻿@model IEnumerable<WebBanHangOnline.Models.EF.Product>
+@{
+    ViewBag.Title = "Giỏ hàng";
+}
+
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/categories_styles.css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/categories_responsive.css">
+
+
+<div class="container product_section_container">
+    <div class="row">
+        <div class="col product_section clearfix">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Giỏ hàng</a></li>
+                </ul>
+            </div>
+
+          
+
+            <!-- Main Content -->
+
+            <div class="main_cart">
+
+                <table class="table">
+                    <thead>
+                        <tr>
+
+                            <th>STT</th>
+                            <th>Hình ảnh </th>
+                            <th>Tên sản phẩm </th>
+                            <th>Danh mục </th>
+                            <th style="width:100px;">Số lượng </th>
+                            <th>Giá bán</th>
+                            <th>Thành tiền</th>
+
+                            <th style="width:300px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="showdata_cart">
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5" id="pagination">
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .total-acount {
+        font-size: 16px;
+        color: #a6bf0b;
+        font-weight: 600;
+    }
+    .main_cart {
+        float: left;
+        width: calc(100%);
+        padding-left: 34px;
+    }
+</style>
+
+
+
+@section scripts{
+    <script src="~/Content/assets/js/categories_custom.js"></script>
+    
+
+
+}
+
+
+
+

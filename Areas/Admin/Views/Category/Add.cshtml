@@ -1,0 +1,158 @@
+﻿@model WebBanHangOnline.Models.EF.Category
+@{
+    ViewBag.Title = "Thêm mới danh mục";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+@section naviheader{
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/Home" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/Category" class="nav-link">Danh mục</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="#" class="nav-link">Thêm mới</a>
+        </li>
+
+    </ul>
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Thêm mới danh mục</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Danh mục</a></li>
+                    <li class="breadcrumb-item active">Thêm mới</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+
+<section class="content">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Thông tin thêm mới danh mục</h3>
+        </div>
+
+        <div class="card-body">
+            
+            <div class="bs-stepper-content">
+
+                <div id="logins-part" class="content active dstepper-block" role="tabpanel" aria-labelledby="logins-part-trigger">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Tiêu đề </label>
+
+                        <input type="text" class="form-control" id="txtTitle" placeholder="Tiêu đề tin">
+
+                        <span class="error text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Thứ tự</label>
+
+                        <input type="text" Value="1" class="form-control" id="txtPosition" placeholder="Tiêu đề tin">
+
+
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Mô tả </label>
+
+                        <textarea class="form-control" aria-multiline="true" id="txtDescription"></textarea>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">SeoTitle </label>
+
+                        <textarea class="form-control" aria-multiline="true" id="txtSeoTitle"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">SeoDescription </label>
+
+                        <textarea class="form-control" aria-multiline="true" id="txtSeoDescription"></textarea>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">SeoKeywords </label>
+
+                        <textarea class="form-control" aria-multiline="true" id="txtSeoKeywords"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <a href="/admin/Category" class="btn btn-danger">Quay lại</a>
+                        <button class="btn btn-primary" id="btnLuuCategory">Lưu</button>
+                    </div>
+
+                </div>
+
+
+
+            </div>
+        </div>
+        <div class="card-footer">
+
+        </div>
+    </div>
+</section>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('body').on('click', '#btnLuuCategory', function () {
+                var tieude = $('#txtTitle').val();
+                var thutu = $('#txtPosition').val();
+                var mota = $('#txtDescription').val();
+                var seotitle = $('#txtSeoTitle').val();
+                var seodescription = $('#txtSeoDescription').val();
+                var seokeywordstle = $('#txtSeoKeywords').val();
+                var model = {
+                    Title: tieude,
+                    Description: mota,
+                    Position:thutu,
+                    SeoTitle: seotitle,
+                    SeoDescription: seodescription,
+                    seoKeywordstle: seokeywordstle,
+                };
+                if (Validate()) {
+                    $.ajax({
+                        url: '/Admin/Category/AddCategory',
+                        type: 'POST',
+                        data: model,
+                        success: function (rs) {
+                            if (rs.success) {
+                                location.reload();
+                            }
+                        }
+                    })
+                }
+
+            })
+
+        })
+        function Validate() {
+            var check = false;
+            var tieude = $('#txtTitle').val();
+            if (tieude === '') {
+                $('#txtTitle').next().html('Bạn chưa nhập tên tiêu đề danh mục');
+                check = false;
+            }
+            else {
+                $('#txtTitle').next().html('');
+                check = true;
+            }
+            return check;
+
+        }
+  
+    </script>
+
+}

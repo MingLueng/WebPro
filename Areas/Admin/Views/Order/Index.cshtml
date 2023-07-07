@@ -1,0 +1,264 @@
+﻿@model IEnumerable<WebBanHangOnline.Models.EF.Order>
+@{
+    ViewBag.Title = "Danh sách đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section naviheader{
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/Home" class="nav-link">Trang chủ</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="#" class="nav-link">@ViewBag.Title</a>
+        </li>
+    </ul>
+}
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">@ViewBag.Title</h3>
+            @*
+                <div class="card-tools">
+                    <a href="/admin/products/add" class="btn btn-primary">Thêm mới</a>
+                    <a href="#" class="btn btn-danger" id="btnDeleteAll">Xóa</a>
+                </div>*@
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-6">
+                    <div class="input-group input-group-sm">
+                        <input type="search" name="searchtext" id="txtSearchBox" class="form-control" placeholder="Search.." />
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-info btn-flat" id="btbSearch">Tìm kiếm</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+
+                        <th>#</th>
+                        <th>Mã đơn hàng</th>
+                        <th>Tên khách hàng </th>
+                        <th>Phone</th>
+                        <th>Tiền</th>
+                        <th>Trạng thái</th>
+                        <th>Ngày tạo</th>
+                        <th style="width:150px;"></th>
+                    </tr>
+                </thead>
+                <tbody id="show_dataprocated">
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="5" id="pagination">
+                        </td>
+                    </tr>
+
+                </tfoot>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+</section>
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Cập nhật trạng thái</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="txtOrderId" value="0" />
+                <div class="form-group">
+                    <label>Trạng thái</label>
+                    <select class="form-control" id="ddTrangThai">
+                       <option value="2">Đã thanh toán</option>
+                    </select>
+                </div>
+       
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" id="btnLuu">Lưu</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+@section scripts{
+
+
+    <script>
+        $(document).ready(function () {
+
+            loadDataOrderView("", null, 5);
+
+            $('body').on('click', '#btbSearch', function () {
+
+                var txtSearch = $('#txtSearchBox').val();
+
+                loadDataOrderView(txtSearch, null, 5);
+
+            });
+            $('body').on('click', ".btnCapNhat", function () {
+                debugger
+                var id = $(this).attr("data-id");
+                var orderid = $("#txtOrderId").val(id);
+                $("#modal-default").modal('show');
+
+            });
+            $('body').on('click', "#btnLuu", function () {
+                var id = $("#txtOrderId").val();
+                var tt = $("#ddTrangThai").val();
+                debugger
+                $.ajax({
+                    url: '/admin/order/update',
+                    type: 'POST',
+                    data: { id: id, trangthai: tt },
+                    success: function (rs) {
+                        if (rs.success) {
+                            location.reload();
+                        }
+                    }
+                });
+            });
+        });
+        function Pagination(CurrentPage, NumberPage, pageSize) {
+            var str = "";
+            if (NumberPage > 0) {
+
+                str += `<nav aria-label="page navigation example"><ul class="pagination">`;
+
+                if (CurrentPage != 1) {
+                    str += `<li class="page-item"><a class="page-link" onclick="NextPage(${CurrentPage - 1},${pageSize})" href="javascript:void(0);" >Previous</a></li>`;
+                }
+                for (i = 1; i <= NumberPage; i++) {
+                    if (CurrentPage === i) {
+                        str += `<li class="page-item active"><a class="page-link" href="javascript:void(0);">${i}</a></li>`;
+                    }
+                    else {
+                        str += `<li class="page-item"><a class="page-link" onclick="NextPage(${i},${pageSize})" href="javascript:void(0);" >${i}</a></li>`;
+                    }
+
+
+                }
+                if (CurrentPage != NumberPage) {
+                    str += `<li class="page-item"><a class="page-link" onclick="NextPage(${CurrentPage + 1},${pageSize})"href="javascript:void(0);">Next</a></li>`;
+                }
+
+
+
+                str += `</ul></nav>`;
+                $('#pagination').html(str);
+
+            }
+        }
+        function NextPage(page, pageSize) {
+            var txtSearch = $('#txtSearchBox').val();
+
+            loadDataOrderView(txtSearch, page, pageSize);
+        }
+        function formatNumber(n) {
+            n += '';
+            x = n.split('.');
+            x1 = x[0];
+            x2 = x.length > 1 ? '.' + x[1] : '';
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(x1)) {
+                x1 = x1.replace(rgx, '$1' + ',' + '$2');
+            }
+            return x1 + x2;
+        }
+        /* function formatNumber(num) {
+             return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+         }*/
+        function formatJsonDate(date) {
+
+            var dateString = date.substr(6);
+            var currentTime = new Date(parseInt(dateString));
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+            if (month < 10) {
+                month = '0' + month
+            }
+            if (day < 10) {
+                day = '0' + day
+            }
+            return day + "/" + month + "/" + year;
+        }
+
+        function loadDataOrderView(_searchName, page, pageSize) {
+
+            $.ajax({
+                url: '/Admin/Order/GetOrderItem',
+                type: 'GET',
+                data: { searchName: _searchName, page: page, pageSize: pageSize },
+                success: function (rs) {
+                    debugger
+                    if (rs.TotalItems > 0) {
+                        var items = rs.data;
+                        var html = "";
+                        var ngaylayanh = "";
+                        var giasp = "";
+                        var strCheck = "";
+                        if (items.length > 0) {
+                            debugger
+                            giasp = formatNumber(items[0].TotalAmount);
+                            strCheck = items[0].TypePayment == 1 ? "Chờ thanh toán" : "Đã thanh toán";
+                            if (items[0].CreatedDate != null) {
+                                ngaylayanh = formatJsonDate(items[0].CreatedDate);
+                            }
+                            html += '<tr id="trow_' + items[0].Id + '">';
+
+                            html += '<td>' + (0 + 1) + '</td>';
+
+                            html += '<td>' + items[0].Code + '</td>';
+                            html += '<td>' + items[0].CustomerName + '</td>';
+                            html += '<td>' + items[0].Phone + '</td>';
+
+                            html += '<td class="product_price">' + giasp + '</td>';
+                            html += '<td>' + strCheck + '</td>';
+                            html += '<td>' + ngaylayanh + '</td>';
+
+                            html += '<td><a href="/admin/order/vieworder/' + items[0].Id + '" data-id="' + items[0].Id + '" class="btn btn-sm btn-success ">Xem</a> <a href="#' + items[0].Id + '" data-id="' + items[0].Id + '" class="btn btn-sm btn-danger btnCapNhat">Cập nhật</a></td>';
+                            html += '</tr>';
+                        }
+
+                    }
+                    else {
+                        html += '<tr>';
+                        html += '<td colspan="4">Không có bản ghi nào</td>';
+                        html += '</tr>';
+                    }
+
+                    $('#show_dataprocated').html(html);
+                    Pagination(rs.CurrentPage, rs.NumberPage, rs.pageSize)
+
+                }
+            })
+        }
+
+
+    </script>
+}

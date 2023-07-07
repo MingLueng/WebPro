@@ -1,0 +1,393 @@
+﻿@model WebBanHangOnline.Models.EF.Product
+@{
+    ViewBag.Title = "Thêm mới sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section naviheader{
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/Home" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/products" class="nav-link">Sản phẩm</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="#" class="nav-link">Thêm mới</a>
+        </li>
+
+    </ul>
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Thêm mới sản phẩm</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Sản phẩm</a></li>
+                    <li class="breadcrumb-item active">Thêm mới</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main content -->
+
+<section class="content">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Thông tin thêm mới sản phẩm</h3>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    @using (Html.BeginForm("Add", "Products", FormMethod.Post, new { }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true)
+                    <div class="card">
+                        <div class="card-header p-2">
+                            <ul class="nav nav-pills">
+                                <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Thông tin chung</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Hình ảnh</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">SEO</a></li>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content">
+                                <div class="active tab-pane" id="activity">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Tên sản phẩm</label>
+                                        <input type="text" name="title" id="title" class="form-control" placeholder="Tiêu đề tin" progess-value="progess1">
+                                        @Html.HiddenFor(x => x.Title, new { @class = "form-control", @placeholder = "Tiêu đề tin " })
+                                        @Html.ValidationMessageFor(x => x.Title, null, new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Alias</label>
+                                        <input type="text" name="alias" id="alias" class="form-control" placeholder="Tiêu đề tin" progess-value="progess1">
+                                        @Html.HiddenFor(x => x.Alias, new { @class = "form-control", @placeholder = "Alias " })
+                                        @Html.ValidationMessageFor(x => x.Alias, null, new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">SKU</label>
+                                        @Html.TextBoxFor(x => x.ProductCode, new { @class = "form-control", @placeholder = "SKU " })
+                                        @Html.ValidationMessageFor(x => x.ProductCode, null, new { @class = "text-danger" })
+                                    </div>
+                                  @*  <div class="form-group">
+                                        <h6 class="exampleInputEmail1">Ảnh đại diện</h6>
+                                        <input type="hidden" name="IMAGE" value="~/Content/assets/images/no-image-available-thumb(1349x760-crop).jpg" id="image" />
+                                        <img src="~/Content/assets/images/no-image-available-thumb(1349x760-crop).jpg" class="img-size" title="Cập nhật" id="show-img" />
+                                    </div>
+                                    <div class="mb-3">
+                                        <button class="addImage">Thêm ảnh</button>
+                                        <hr />
+                                        <div class="list-img d-flex flex-wrap">
+
+                                        </div>
+                                    </div>*@
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Danh mục sản phẩm</label>
+                                        @Html.DropDownListFor(x => x.ProductCategoryId, ViewBag.ProductCategory as SelectList, "Chọn danh mục sản phẩm", new { @class = "form-control", @placeholder = "Danh mục sản phẩm" })
+                                        @Html.ValidationMessageFor(x => x.ProductCategoryId, null, new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Mô tả</label>
+                                        <textarea type="text" name="description" id="description" class="form-control" placeholder="Tiêu đề tin "></textarea>
+                                        @Html.HiddenFor(x => x.Description, new { @class = "form-control", @placeholder = "Mô tả " })
+                                        @Html.ValidationMessageFor(x => x.Description, null, new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Chi tiết sản phẩm</label>
+                                        @Html.TextAreaFor(x => x.Detail, new { @class = "form-control", @id = "txtDetail" })
+                                        @Html.ValidationMessageFor(x => x.Detail, null, new { @class = "text-danger" })
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Số lượng</label>
+                                                @Html.TextBoxFor(x => x.Quantity, new { @class = "form-control", @type = "number" })
+                                                @Html.ValidationMessageFor(x => x.Quantity, null, new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Giá</label>
+                                                <input type="text" name="demoPrice" id="demoPrice" class="form-control auto" data-a-dec="," data-a-sep=".">
+                                                @Html.HiddenFor(x => x.Price, new { @class = "form-control", @placeholder = "Giá " })
+                                                @Html.ValidationMessageFor(x => x.Price, null, new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Giá khuyến mãi</label>
+                                                <input type="text" name="demoPriceSale" id="demoPriceSale" class="form-control auto" data-a-dec="," data-a-sep=".">
+                                                @Html.HiddenFor(x => x.PriceSale, new { @class = "form-control", @placeholder = "Giá khuyến mãi " })
+                                                @Html.ValidationMessageFor(x => x.PriceSale, null, new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Giá nhập</label>
+                                                <input type="text" name="demoOriginalPrice" id="demoOriginalPrice" class="form-control auto" data-a-dec="," data-a-sep=".">
+                                                @Html.HiddenFor(x => x.OriginalPrice, new { @class = "form-control", @placeholder = "Giá nhập " })
+                                                @Html.ValidationMessageFor(x => x.OriginalPrice, null, new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <div class="custom-control custom-switch">
+                                                    @Html.CheckBoxFor(x => x.IsActive, new { @class = "custom-control-input", @id = "IsActivecustomSwitch" })
+                                                    <label for="IsActivecustomSwitch" class="custom-control-label">Hiển thị</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <div class="custom-control custom-switch">
+                                                    @Html.CheckBoxFor(x => x.IsHot, new { @class = "custom-control-input", @id = "IsHotcustomSwitch" })
+                                                    <label for="IsHotcustomSwitch" class="custom-control-label">Hot</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <div class="custom-control custom-switch">
+                                                    @Html.CheckBoxFor(x => x.IsSale, new { @class = "custom-control-input", @id = "IsSalecustomSwitch" })
+                                                    <label for="IsSalecustomSwitch" class="custom-control-label">Khuyến mãi</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <div class="custom-control custom-switch">
+                                                    @Html.CheckBoxFor(x => x.IsFeature, new { @class = "custom-control-input", @id = "IsFeaturecustomSwitch" })
+                                                    <label for="IsFeaturecustomSwitch" class="custom-control-label">Nổi bật</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="timeline">
+                                    <div class="row">
+                                        <div class="col-md-12 text-right">
+                                            <input type="button" class="btn btn-primary" id="iTaiAnh" onclick="BrowseServer();" value="Tải ảnh" />
+                                        </div>
+                                        <div class="col-md-12">
+                                            <table class="table table-hover" id="ibAnhSanPham">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">#</th>
+                                                        <th class="text-center">Ảnh</th>
+                                                        <th class="text-center">Ảnh đại diện</th>
+                                                        <th class="text-center">Thao tác</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tbHtml">
+                                                </tbody>
+                                            </table>
+                                            <input type="hidden" id="tCurrentId" value="0" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="settings">
+                                    <form class="form-horizontal">
+                                        <div class="form-group row">
+                                            <label for="inputName" class="col-sm-2 col-form-label">SeoTitle</label>
+                                            <div class="col-sm-10">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">SeoTitle</label>
+                                                    <input type="text" name="meta-title" id="meta-title" class="form-control" placeholder = "Tiêu đề tin ">
+                                                    @Html.HiddenFor(x => x.SeoTitle, new { @class = "form-control", @placeholder = "Tiêu đề tin ", @id = "meta-title" })
+                                                    @Html.ValidationMessageFor(x => x.SeoTitle, null, new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="inputName" class="col-sm-2 col-form-label">SeoDescription</label>
+                                            <div class="col-sm-10">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">SeoDescription</label>
+                                                    <textarea type="text" name="meo-description" id="meo-description" class="form-control"></textarea>
+                                                    @Html.HiddenFor(x => x.SeoDescription, new { @class = "form-control", @placeholder = "Tiêu đề tin " })
+                                                    @Html.ValidationMessageFor(x => x.SeoDescription, null, new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="inputName" class="col-sm-2 col-form-label">SeoKeywords</label>
+                                            <div class="col-sm-10">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">SeoKeywords</label>
+                                                    
+                                                    @Html.TextBoxFor(x => x.SeoKeywords, new { @class = "form-control", @placeholder = "Tiêu đề tin " })
+                                                    @Html.ValidationMessageFor(x => x.SeoKeywords, null, new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <a href="/admin/products" class="btn btn-danger">Quay lại</a>
+                            <button type="submit" class="btn btn-success">Lưu</button>
+                        </div>
+                    </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+
+        </div>
+    </div>
+</section>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+          /*  addImage();
+            ChooseImage();
+            deleteImage();*/
+            $('.auto').autoNumeric('init');
+            $('#demoPrice').bind('blur focusout keypress keyup', function () {
+                var demoGet = $('#demoPrice').autoNumeric('get');
+                $('#Price').val(demoGet);
+                $('#Price').autoNumeric('set', demoGet);
+            });
+            $('#demoPriceSale').bind('blur focusout keypress keyup', function () {
+                var demoGet1 = $('#demoPriceSale').autoNumeric('get');
+                $('#PriceSale').val(demoGet1);
+                $('#PriceSale').autoNumeric('set', demoGet1);
+            });
+            $('#demoOriginalPrice').bind('blur focusout keypress keyup', function () {
+                var demoGet = $('#demoOriginalPrice').autoNumeric('get');
+                $('#OriginalPrice').val(demoGet);
+                $('#OriginalPrice').autoNumeric('set', demoGet);
+            });
+            CKEDITOR.replace('txtDetail', {
+                customConfig: '/content/ckeditor/ckeditor/config.js',
+                extraAllowedContent: 'span',
+            })
+            $('#title').bind("change keyup", function () {
+                let val = $(this).val();
+                $('#alias').val((val));
+                $('#meta-title').val(val.trim());
+
+
+            });
+            $('#description').bind("change keyup", function () {
+                let val = $(this).val();
+                $('#meta-description').val((val()));
+
+
+            });
+
+        $('body').on('click', '.btnXoaAnh', function() {
+
+            var id = $(this).attr('data-id');
+            var conf = confirm('Bạn có muốn xóa ảnh này không?');
+            if (conf === true) {
+                 $('#trow_' + id).fadeTo('fast',0.5, function () {
+                    $(this).slideUp('fast', function () {
+                          $(this).remove();
+                    })
+
+                 })
+                var temp = $('#tCurrentId').val();
+                var currentId = parseInt(temp) - 1;
+                $('#tCurrentId').val(currentId);
+              }
+           })
+        })
+        function BrowseServer() {
+            var finder = new CKFinder();
+            finder.selectActionFunction = function (fileUrl) {
+                /*document.getElementById(field).value = fileUrl;*/
+                AddImageProduct(fileUrl);
+
+            }
+            finder.popup();
+        }
+        function AddImageProduct(url) {
+            var temp = $('#tCurrentId').val();
+            var currentId = parseInt(temp) + 1;
+            var str = "";
+            if (currentId == 1) {
+               str += `<tr id="trow_${currentId}">
+                <td class="text-center">${currentId}</td>
+                <td class="text-center"><img width="80" src="${url}" /><input type="hidden" value="${url}" name="Images" /></td>
+                <td class="text-center"><input type="radio" name="rDefault" value="${currentId}" checked="checked" /></td>
+                <td class="text-center"><a href="#" data-id ="${currentId}" class="btn btn-sm btn-danger btnXoaAnh">Xóa</a></td>
+                </tr>`;
+            }
+            else {
+               str += `<tr id="trow_${currentId}">
+                <td class="text-center">${currentId}</td>
+                <td class="text-center"><img width="80" src="${url}" /><input type="hidden" value="${url}" name="Images" /></td>
+                <td class="text-center"><input type="radio" value="${currentId}" name="rDefault"/></td>
+                <td class="text-center"><a href="#" data-id ="${currentId}" class="btn btn-sm btn-danger btnXoaAnh">Xóa</a></td>
+                </tr>`;
+            }
+            $('#tbHtml').append(str);
+            $('#tCurrentId').val(currentId);
+
+
+        }
+     /*   function addImage() {
+            $('.addImage').click(function () {
+                let finder = new CKFinder();
+                finder.selectActionFunction = function (fileUrl) {
+                    let row = `<div class="img">
+                                    <img src="${fileUrl}" alt="hình ảnh mô tả sản phẩm" />
+                                    <i class="fas fa-trash-alt"></i>
+                                </div>`;
+                    $('.list-img').append(row);
+                };
+                finder.popup();
+            });
+            $(document).on('click', '.list-img img', function () {
+                let finder = new CKFinder();
+                let img = this;
+                finder.selectActionFunction = function (fileUrl) {
+                    console.log(img);
+                    $(img).attr('src', fileUrl);
+                };
+                finder.popup();
+            })
+        }
+        
+        function ChooseImage() {
+            $('#show-img').click(function () {
+                let finder = new CKFinder();
+                let img = this;
+                finder.selectActionFunction = function (fileUrl) {
+                    console.log(fileUrl);
+                    $(img).attr('src', fileUrl);
+                    $('#image').val(fileUrl);
+                };
+                finder.popup();
+            });
+        }
+        function deleteImage() {
+            $(document).on('click', '.list-img .img i', function () {
+                $(this).parent('.img').remove();
+            })
+        }*/
+    </script>
+
+}
+
